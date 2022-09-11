@@ -15,7 +15,6 @@
  *
  ******************************************************************************
  */
-#define STM32F103xB
 #include <stm32f1xx.h>
 #include <stm32f103xb.h>
 //#include <system_stm32f1xx.h>
@@ -62,10 +61,10 @@ int main(void)
 	led_init();
 	while(1){
 		led_on();
-		ms_delay(1000);
+		ms_delay(500);
 //		DelayMs(500);
 		led_off();
-		ms_delay(1000);
+		ms_delay(500);
 //		DelayMs(500);
 	}
 
