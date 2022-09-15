@@ -8,7 +8,6 @@ AS 		= 	${TRIPLE}-as
 GDB 	= 	${TRIPLE}-gdb
 OBJCOPY =  	${TRIPLE}-objcopy
 
-OPENOCD_BASE = /opt/openocd
 INCFLAGS := -Iinclude -Ilib/include
 ASFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb --specs=nano.specs $(INCFLAGS) -MMD -MP  -x assembler-with-cpp
 LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb --specs=nosys.specs $(INCFLAGS)
@@ -20,8 +19,8 @@ BUILD_DIR:= build
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 OBJS := build/src/startup_stm32f103c8tx.o $(SRCS:%.c=$(BUILD_DIR)/%.o) 
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJS) src/STM32F103C8TX_FLASH.ld
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) -T"src/STM32F103C8TX_FLASH.ld" -Wl,-Map="$(BUILD_DIR)/$(TARGET).map" -Wl,--gc-sections -static -Wl,--start-group -lc -lm -Wl,--end-group
+$(BUILD_DIR)/$(TARGET).elf: $(OBJS) STM32F103C8TX_FLASH.ld
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) -T"STM32F103C8TX_FLASH.ld" -Wl,-Map="$(BUILD_DIR)/$(TARGET).map" -Wl,--gc-sections -static -Wl,--start-group -lc -lm -Wl,--end-group
 
 
 
@@ -44,7 +43,8 @@ all:
 	arm-none-eabi-gcc $(LDFLAGS) -o "build/blink.elf" build/src/*.o  -T"src/STM32F103C8TX_FLASH.ld" -Wl,-Map="build/blink.map" -Wl,--gc-sections -static -Wl,--start-group -lc -lm -Wl,--end-group
 
 flash:
-	openocd -d2 -s /opt/openocd/scripts -f interface/stlink.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {build/blink.elf}  verify reset; shutdown;"
+	@# openocd -d2 -s /opt/openocd/scripts -f interface/stlink-v2.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {build/$(TARGET).elf}  verify reset; shutdown;"
+	openocd -d2 -f interface/stlink.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {build/$(TARGET).elf}  verify reset; shutdown;"
 
 clean:
 	rm -rf $(BUILD_DIR)
