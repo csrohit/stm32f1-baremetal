@@ -30,7 +30,7 @@ $(BUILD_DIR)/%.o: %.c
 
 $(BUILD_DIR)/%.o: %.s
 	@mkdir -p $(dir $@)
-	arm-none-eabi-gcc $(ASFLAGS) -c src/startup_stm32f103c8tx.s -o build/src/startup_stm32f103c8tx.o
+	arm-none-eabi-gcc $(ASFLAGS) -c $< -o $@
 
 
 all: 
