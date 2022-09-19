@@ -5,6 +5,34 @@ Everything from development, flashing to debugging can be done in Visual Studio 
 
 ![Build Passing](https://img.shields.io/badge/build-passing-brightgreen) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
+
+## Dependencies
+
+* make
+    Make utility is required for configuring and building this project. You can install cmake on linux by running command:
+
+    ```bash
+    sudo apt-get install build-essential
+    ```
+
+* gcc-arm-none-eabi toolchain
+    ARM cross-platform toolchain is required to build applications for arm mcus. Toolchain can be installed by running following command:
+
+    ```bash
+    sudo apt-get install gcc-arm-none-eabi
+    ```
+
+* openocd
+    It is an Open On Circuit Debugging tool used to flash and debug arm micro controllers. You can install cmake on linux by running command:
+
+   ```bash
+   sudo apt install openocd -y
+   ```
+
+* Cortex Debug extension
+    This extension is required to enable debugging for cortex m microcontrollers in vscode. Install all the recommendded extension for better experience.
+
+
 ## Project Structure
 
 * `src` directory contains all source files for the project
@@ -36,41 +64,44 @@ Running the project is super easy. Just clone, build, and flash.
     git clone git@github.com:csrohit/bluepill-template-project.git
     cd bluepill-template-project
     ```
+## Configuration
 
-#### Build
+All the configuration required for building this project is given below.
 
-To compile the project you need to have installed `gcc-arm-none-eabi` toolchain on your system.
-On Linux:
+1. Build output directory
+    In `Makefile`, output directory can be configured using variable `BUILD_DIR`.
 
-```bash
-sudo apt install gcc-arm-none-eabi
-```
+2. Build type
+    In `Makefile`, build type can be configured using variable`DEBUG`. Possible values are `Debug` and `Release`.
 
-Run following command in terminal to generate flashable binaries for blue pill board.
+3. Binary name
+    In `CMakeLists.txt`, output binary name can be configured using `project(<binary-name>)` macro.
+    ** update above info in `.vscode/launch.json` as well for debugging to work.
+
+## Build
+
+Run following command in terminal to generate flashable binaries for blue pill board. Build files will be written to **Build Output Directory** as configured.
 
 ```bash
 make all
 ```
 
-#### Flash
+## Flash
 
-To flash you need to have
+1. Connect Stlink to PC and blue pill board using swd headers.
+2. Put blue pill board in programming mode.
+3. Run following to flash board with binary.
 
-1. Openocd installed on your machine.
+```bash
+make flash
+```
 
-   ```bash
-   sudo apt install openocd -y
-   ```
-
-2. Connect Stlink to PC and blue pill board using swd headers.
-3. Put blue pill board in programming mode
-
-    ```bash
-    make flash
-    ```
-
-* or you can flash the hex file using [STM32 Cube Programmer](https://docs.nanoframework.net/content/stm32/flash-cube-programmer.html)
-
-#### Output
+## Output
 
 Onboard led connected to Pin C13 can be observed to be blinking after 500ms.
+
+## Debug
+
+Click in `Run and Debug` option in VsCode sidebar. Then launch `Cortex Debug` target.
+
+Happy debugging....
