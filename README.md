@@ -12,14 +12,14 @@ Everything from development, flashing to debugging can be done in Visual Studio 
     Make utility is required for configuring and building this project. You can install cmake on linux by running command:
 
     ```bash
-    sudo apt-get install build-essential
+    sudo apt install build-essential
     ```
 
 * gcc-arm-none-eabi toolchain
     ARM cross-platform toolchain is required to build applications for arm mcus. Toolchain can be installed by running following command:
 
     ```bash
-    sudo apt-get install gcc-arm-none-eabi
+    sudo apt install gcc-arm-none-eabi
     ```
 
 * openocd
