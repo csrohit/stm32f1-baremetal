@@ -9,7 +9,7 @@ Everything from development, flashing to debugging can be done in Visual Studio 
 ## Dependencies
 
 * make
-    Make utility is required for configuring and building this project. You can install cmake on linux by running command:
+    Make utility is required for configuring and building this project. You can install make on linux by running command:
 
     ```bash
     sudo apt install build-essential
@@ -23,14 +23,14 @@ Everything from development, flashing to debugging can be done in Visual Studio 
     ```
 
 * openocd
-    It is an Open On Circuit Debugging tool used to flash and debug arm micro controllers. You can install cmake on linux by running command:
+    It is an Open On Circuit Debugging tool used to flash and debug arm micro controllers. You can install openocd on linux by running command:
 
    ```bash
    sudo apt install openocd -y
    ```
 
 * Cortex Debug extension
-    This extension is required to enable debugging for cortex m microcontrollers in vscode. Install all the recommendded extension for better experience.
+x`
 
 
 ## Project Structure
