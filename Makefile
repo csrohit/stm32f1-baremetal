@@ -1,6 +1,6 @@
 TARGET := blink
 # debug build?Release
-BUILD_TYPE = Debug
+BUILD_TYPE = Release
 
 TRIPLE  = 	arm-none-eabi
 CC 		=	${TRIPLE}-gcc
@@ -10,9 +10,8 @@ GDB 	= 	${TRIPLE}-gdb
 OBJCOPY =  	${TRIPLE}-objcopy
 
 INCFLAGS := -Iinclude -Ilib/include
-ASFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb --specs=nano.specs $(INCFLAGS) -MMD -MP  -x assembler-with-cpp
-LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb --specs=nosys.specs $(INCFLAGS)
-CFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb  --specs=nano.specs $(INCFLAGS) -std=gnu11 -Os -Wall -fstack-usage  -fdata-sections -ffunction-sections -DSTM32 -DSTM32F1 -DSTM32F103C8Tx
+LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS)  -Wl,--gc-sections
+CFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb  -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
 
 
 ifeq ($(BUILD_TYPE), Debug)
@@ -26,10 +25,10 @@ SRC_DIRS := src
 BUILD_DIR:= build
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
-OBJS := build/src/startup_stm32f103c8tx.o $(SRCS:%.c=$(BUILD_DIR)/%.o) 
+OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJS) STM32F103C8TX_FLASH.ld
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) -T"STM32F103C8TX_FLASH.ld" -Wl,-Map="$(BUILD_DIR)/$(TARGET).map" -Wl,--gc-sections -static -Wl,--start-group -lc -lm -Wl,--end-group
+$(BUILD_DIR)/$(TARGET).elf: $(OBJS) 
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) -Tstm32f1.ld -Wl,-Map="$(BUILD_DIR)/$(TARGET).map"
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
