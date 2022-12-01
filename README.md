@@ -1,4 +1,4 @@
-# Blue Pill Project Template using Makefile
+# Baremetal Programming STM32 (ARM Cortex M3)
 
 A boilerplate for generating projects for stm32 blue pill board using makefile. The projects does not use any tools provided by ST Microelectronics.
 Everything from development, flashing to debugging can be done in Visual Studio Code only.
