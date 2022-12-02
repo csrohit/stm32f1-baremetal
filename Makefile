@@ -10,7 +10,7 @@ GDB 	= 	${TRIPLE}-gdb
 OBJCOPY =  	${TRIPLE}-objcopy
 
 INCFLAGS := -Iinclude -Ilib/include
-LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS)  -Wl,--gc-sections
+LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS)  -Wl,--gc-sections,--print-gc-sections,--cref
 CFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb  -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
 
 
