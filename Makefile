@@ -1,33 +1,33 @@
-TARGET := blink
+TARGET      := blink
 # debug build?Release
-BUILD_TYPE = Release
+BUILD_TYPE  = Release
 
-TRIPLE  = 	arm-none-eabi
-CC 		=	${TRIPLE}-gcc
-LD 		= 	${TRIPLE}-ld
-AS 		= 	${TRIPLE}-as
-GDB 	= 	${TRIPLE}-gdb
-OBJCOPY =  	${TRIPLE}-objcopy
+TRIPLE      =   arm-none-eabi
+CC          =   ${TRIPLE}-gcc
+LD 		    =   ${TRIPLE}-ld
+AS 		    =   ${TRIPLE}-as
+GDB 	    =   ${TRIPLE}-gdb
+OBJCOPY     =   ${TRIPLE}-objcopy
 
-INCFLAGS := -Iinclude -Ilib/include
-LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS)  -Wl,--gc-sections
-CFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb  -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
+INCFLAGS    := -Iinclude -Ilib/include
+LDFLAGS     := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -Wl,--gc-sections
+CFLAGS      := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
 
-ifeq ($(BUILD_TYPE), Debug)
-CFLAGS += -g -gdwarf-2
+ifeq ($(BUILD_TYPE), Debug) 
+CFLAGS      += -g -gdwarf-2
 endif
 
 # Generate dependency information
-CFLAGS += -MMD -MP 
+CFLAGS      += -MMD -MP 
 
-SRC_DIRS := src
-BUILD_DIR:= build
+SRC_DIRS    := src
+BUILD_DIR   := build
 
-SRCS := $(shell find $(SRC_DIRS) -name '*.c')
-OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
+SRCS        := $(shell find $(SRC_DIRS) -name '*.c')
+OBJS        := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
 
 # binary file to flash on target
-all: $(BUILD_DIR)/$(TARGET).bin
+all : $(BUILD_DIR)/$(TARGET).bin
 
 %.bin: %.elf
 	@echo "COPY " $< " => " $@
