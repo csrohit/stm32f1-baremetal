@@ -13,7 +13,6 @@ INCFLAGS := -Iinclude -Ilib/include
 LDFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS)  -Wl,--gc-sections
 CFLAGS := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb  -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
 
-
 ifeq ($(BUILD_TYPE), Debug)
 CFLAGS += -g -gdwarf-2
 endif
@@ -27,6 +26,27 @@ BUILD_DIR:= build
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
 
+# binary file to flash on target
+all: $(BUILD_DIR)/$(TARGET).bin
+
+%.bin: %.elf
+	@echo "COPY " $< " => " $@
+	@$(OBJCOPY) -Obinary $(*).elf $(*).bin
+
+# executable object files for debugging
+%.hex: %.elf
+	$(OBJCOPY) -Oihex $(*).elf $(*).hex
+
+%.srec: %.elf
+	$(OBJCOPY) -Osrec $(*).elf $(*).srec
+
+%.list: %.elf
+	$(OBJDUMP) -S $(*).elf > $(*).list
+
+%.size: %.elf
+	@echo "Section wise usage: "
+	@$(SIZE) $<
+
 $(BUILD_DIR)/$(TARGET).elf: $(OBJS) 
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) -Tstm32f1.ld -Wl,-Map="$(BUILD_DIR)/$(TARGET).map"
 
@@ -39,10 +59,7 @@ $(BUILD_DIR)/%.o: %.s
 	$(CC) $(ASFLAGS) -c $< -o $@
 
 flash:
-	@# openocd -d2 -s /opt/openocd/scripts -f interface/stlink-v2.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {build/$(TARGET).elf}  verify reset; shutdown;"
-	openocd -d2 -f interface/stlink.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {build/$(TARGET).elf}  verify reset; shutdown;"
-
-all: $(BUILD_DIR)/$(TARGET).elf
+	st-flash write $(BUILD_DIR)/$(TARGET).bin 0x8000000
 
 clean:
 	rm -rf $(BUILD_DIR)
