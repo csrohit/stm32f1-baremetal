@@ -89,7 +89,7 @@ void init_adc(void)
     ADC1->CR1 |= ADC_CR1_EOCIE;
 
     /* Put adc in Continuous mode and wake up from power down mode*/
-    ADC1->CR2 |= (ADC_CR2_ADON);
+    ADC1->CR2 |= (ADC_CR2_ADON | ADC_CR2_CONT);
     NVIC_EnableIRQ(ADC1_IRQn);
 
     /* Set right data alignement */
@@ -126,7 +126,7 @@ int main(void)
             ;
 
     init_adc();
-    USART1_puts("Hello \r\n");
+    USART1_puts("ADC Continuous conversion mode using interrupt \r\n");
     while (1)
     {
         if (1 == bConversionComplete)
@@ -134,7 +134,6 @@ int main(void)
             sprintf_(msg, "Digital value: %hu\r\n", adc_value);
             USART1_puts(msg);
             bConversionComplete = 0;
-            ADC1->CR2 |= ADC_CR2_ADON;
         }
     }
 }
