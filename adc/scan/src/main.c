@@ -8,9 +8,10 @@
  * @copyright Copyright (c) 2024
  *
  * @attention
- * This software component is licensed by Rohit Nimkar under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at: opensource.org/licenses/BSD-3-Clause
+ * This software component is licensed by Rohit Nimkar under BSD 3-Clause
+ * license, the "License"; You may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at:
+ * opensource.org/licenses/BSD-3-Clause
  *
  */
 
@@ -82,15 +83,22 @@ void init_adc(void)
     RCC->APB2ENR |= RCC_APB2ENR_ADC1EN | RCC_APB2ENR_IOPAEN;
 
     /* Configure PA0 in analog input mode */
-    GPIOA->CRL &= ~(GPIO_CRL_CNF0 | GPIO_CRL_MODE0);
+    GPIOA->CRL &= ~(GPIO_CRL_CNF1 | GPIO_CRL_MODE1);
 
     /* Set sampling time = 28.5 cycles*/
-    ADC1->SMPR2 |= (ADC_SMPR2_SMP0_1 | ADC_SMPR2_SMP0_0);
-    ADC1->CR1 |= ADC_CR1_EOCIE;
+    ADC1->SMPR2 |= (ADC_SMPR2_SMP1_1 | ADC_SMPR2_SMP1_0);
 
-    /* Put adc in Continuous mode and wake up from power down mode*/
-    ADC1->CR2 |= (ADC_CR2_ADON);
-    NVIC_EnableIRQ(ADC1_IRQn);
+    /* Single conversion */
+    ADC1->SQR1 &= ~(ADC_SQR1_L);
+
+    /* channel 0 */
+    ADC1->SQR3 |= ADC_SQR3_SQ1_0;
+
+    /* Enable end-of-conversion interrupt */
+    // ADC1->CR1 |= ADC_CR1_EOCIE;
+
+    /* Wake up from power down mode*/
+    ADC1->CR2 |= ADC_CR2_ADON;
 
     /* Set right data alignement */
     ADC1->CR2 &= ~ADC_CR2_ALIGN;
@@ -105,8 +113,10 @@ void init_adc(void)
     while (ADC1->CR2 & ADC_CR2_CAL)
         ;
 
+    // NVIC_EnableIRQ(ADC1_IRQn);
+
     /* Start conversion */
-    ADC1->CR2 |= ADC_CR2_ADON;
+    ADC1->CR2 |= (ADC_CR2_ADON);
 }
 
 void ADC_IRQHandler(void)
@@ -127,14 +137,25 @@ int main(void)
 
     init_adc();
     USART1_puts("Hello \r\n");
+
+    // ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
+    sprintf_(msg, "Digital value0: %hu\r\n", adc_value);
+    USART1_puts(msg);
+    ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
     while (1)
     {
-        if (1 == bConversionComplete)
+
+        // wait for the end of conversion
+        while (!((ADC1->SR) & ADC_SR_EOC))
         {
-            sprintf_(msg, "Digital value: %hu\r\n", adc_value);
-            USART1_puts(msg);
-            bConversionComplete = 0;
-            ADC1->CR2 |= ADC_CR2_ADON;
+            ;
         }
+        adc_value = ADC1->DR;
+        sprintf_(msg, "Digital value3: %hu\r\n", adc_value);
+        USART1_puts(msg);
+
+        ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
+        ADC1->CR2 |= (ADC_CR2_ADON);
+        delay(10);
     }
 }
