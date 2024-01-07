@@ -1,0 +1,4 @@
+-Wall
+-std=c++17
+-Iinclude
+-lfmt

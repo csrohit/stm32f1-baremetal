@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/lib/usart",
+                "${workspaceFolder}/lib/**"
+            ],
+            "defines": [
+                "STM32F103xB"
+            ],
+            "compilerPath": "/Applications/ARM/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

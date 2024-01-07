@@ -1,0 +1,13 @@
+# build files
+build
+
+# vscode files
+settings.json
+.cortex-debug*
+
+# draw.io files
+*.bkp
+*.dtmp
+
+# mac files
+.DS_Store

@@ -1,0 +1,17 @@
+[
+  {
+    "directory": ".",
+    "command": "arm-none-eabi-g++ -mfloat-abi=soft -mthumb -mcpu=cortex-m3 -DSTM32F103xB -Iinclude -Ilib/usart -Ilib/system -MMD  -Os -nostdlib -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections  -fno-exceptions -fno-rtti -Wall -Wextra -Wundef -Wshadow -Wredundant-decls  -Werror -o build/src/startup_stm32f103.o -c src/startup_stm32f103.cpp",
+    "file": "src/startup_stm32f103.cpp"
+  },
+  {
+    "directory": ".",
+    "command": "arm-none-eabi-g++ -mfloat-abi=soft -mthumb -mcpu=cortex-m3 -DSTM32F103xB -Iinclude -Ilib/usart -Ilib/system -MMD  -Os -nostdlib -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections  -fno-exceptions -fno-rtti -Wall -Wextra -Wundef -Wshadow -Wredundant-decls  -Werror -o build/src/main.o -c src/main.cpp",
+    "file": "src/main.cpp"
+  },
+  {
+    "directory": ".",
+    "command": "arm-none-eabi-g++ -mfloat-abi=soft -mthumb -mcpu=cortex-m3 -DSTM32F103xB -Iinclude -Ilib/usart -Ilib/system -MMD  -Os -nostdlib -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections  -fno-exceptions -fno-rtti -Wall -Wextra -Wundef -Wshadow -Wredundant-decls  -Werror -o build/lib/system/system.o -c lib/system/system.cpp",
+    "file": "lib/system/system.cpp"
+  }
+]
