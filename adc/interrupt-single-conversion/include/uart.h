@@ -21,11 +21,9 @@
 extern uint32_t SystemCoreClock;
 
 /**
- * @brief
- *   Initialize USART1 peripheral
+ * @brief Initialize USART1 peripheral
  *
- * @param [in] 
- *   baudrate baudrate to be configurate
+ * @param baudrate baudrate to be configurate
  */
 static inline void USART1_init(uint32_t baudrate)
 {

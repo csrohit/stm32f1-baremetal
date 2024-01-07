@@ -1,6 +1,5 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
-
 /**
  * @file     main.h
  * @author   Rohit Nimkar <https://www.linkedin.com/in/rohit-nimkar>
@@ -16,7 +15,6 @@
  * License. You may obtain a copy of the License at: opensource.org/licenses/BSD-3-Clause
  *
  */
-
 
 int  main(void);
 void init_clock(void);

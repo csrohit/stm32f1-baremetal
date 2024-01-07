@@ -16,7 +16,7 @@
  *
  */
 
-#include "timer.h"
+#include <stdint.h>
 
 /**
  * @brief

@@ -1,13 +1,13 @@
 /**
- * @file startup_stm32f1.c
- * @author Rohit Nimkar (nehalnimkar@gmail.com)
- * @brief startup declarations and function for the STM32F1 series controllers
- *        See: RM0008 10.1.2 Interrupt and exception vectors, Table 63. Vector table for other STM32F10xxx devices
+ * @file    startup_stm32f1.c
+ * @author  Rohit Nimkar <https://www.linkedin.com/in/rohit-nimkar>
+ * @brief   startup declarations and function for the STM32F1 series controllers
+ *          See: RM0008 10.1.2 Interrupt and exception vectors, Table 63. Vector table for other STM32F10xxx devices
  * 
  * @version 1.2
- * @date 2022-12-07
+ * @date    2022-12-07
  * 
- * @copyright Copyright (c) 2022
+ * @copyright Copyright (c) 2024
  * @attention
  * 
  * This software component is licensed by Rohit Nimkar under BSD 3-Clause license,
