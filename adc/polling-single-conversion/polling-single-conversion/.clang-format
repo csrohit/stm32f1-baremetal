@@ -1,0 +1,16 @@
+---
+TabWidth: '4'
+IndentWidth: '4'
+ContinuationIndentWidth: '4'
+BreakBeforeBraces: Allman
+PointerAlignment: Right
+
+AlignConsecutiveMacros: 'true'
+AlignConsecutiveAssignments: 'true'
+AlignConsecutiveDeclarations: 'true'
+AlignEscapedNewlines: Left
+ColumnLimit: 200
+IndentCaseLabels: true
+AllowShortFunctionsOnASingleLine: None
+...
+
