@@ -13,8 +13,8 @@ INCFLAGS    := -Iinclude -Ilib/include
 LDFLAGS     := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -Wl,--gc-sections
 CFLAGS      := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
 
-ifeq ($(BUILD_TYPE), Debug) 
-CFLAGS      += -g -gdwarf-2
+ifeq ($(BUILD_TYPE), Debug)
+CFLAGS 		+= -g -gdwarf-2
 endif
 
 # Generate dependency information
@@ -60,6 +60,9 @@ $(BUILD_DIR)/%.o: %.s
 
 flash:
 	st-flash write $(BUILD_DIR)/$(TARGET).bin 0x8000000
+
+flash-openocd:
+	openocd -d2 -f interface/stlink.cfg -c "transport select hla_swd" -f target/stm32f1x.cfg -c "program {$(BUILD_DIR)/$(TARGET).elf}  verify reset; shutdown;"
 
 clean:
 	rm -rf $(BUILD_DIR)
