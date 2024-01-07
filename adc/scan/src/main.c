@@ -91,13 +91,10 @@ void init_adc(void)
     /* Single conversion */
     ADC1->SQR1 &= ~(ADC_SQR1_L);
 
-    /* channel 0 */
+    /* Channel1 as first conversion */
     ADC1->SQR3 |= ADC_SQR3_SQ1_0;
 
-    /* Enable end-of-conversion interrupt */
-    // ADC1->CR1 |= ADC_CR1_EOCIE;
-
-    /* Wake up from power down mode*/
+    /* Wake up from power down mode */
     ADC1->CR2 |= ADC_CR2_ADON;
 
     /* Set right data alignement */
@@ -113,16 +110,8 @@ void init_adc(void)
     while (ADC1->CR2 & ADC_CR2_CAL)
         ;
 
-    // NVIC_EnableIRQ(ADC1_IRQn);
-
     /* Start conversion */
     ADC1->CR2 |= (ADC_CR2_ADON);
-}
-
-void ADC_IRQHandler(void)
-{
-    bConversionComplete = 1;
-    adc_value           = ADC1->DR;
 }
 
 int main(void)
@@ -136,25 +125,20 @@ int main(void)
             ;
 
     init_adc();
-    USART1_puts("Hello \r\n");
 
-    // ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
     sprintf_(msg, "Digital value0: %hu\r\n", adc_value);
     USART1_puts(msg);
-    ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
     while (1)
     {
-
         // wait for the end of conversion
         while (!((ADC1->SR) & ADC_SR_EOC))
         {
             ;
         }
         adc_value = ADC1->DR;
-        sprintf_(msg, "Digital value3: %hu\r\n", adc_value);
+        sprintf_(msg, "Digital value: %hu\r\n", adc_value);
         USART1_puts(msg);
 
-        ADC1->CR2 |= ADC_CR2_SWSTART; // start adc conversion
         ADC1->CR2 |= (ADC_CR2_ADON);
         delay(10);
     }

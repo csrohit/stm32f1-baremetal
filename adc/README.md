@@ -11,7 +11,7 @@ Transmit the sensor value read to USART1. This project does not require any IDE 
 
 ##ADC Modes
 ADC in STM32 can be utilized in multiple modes as follows:
-2. [Single channel single conversion using polling](polling-single-conversion)
+1. [Single channel single conversion using polling](polling-single-conversion)
 2. [Single channel single conversion using interrupt](polling-continuous-conversion)
-2. [Single channel continuous conversion using polling](interrupt-single-conversion)
-2. [Single channel continuous conversion using interrupt](interrupt-continuous-conversion)
+3. [Single channel continuous conversion using polling](interrupt-single-conversion)
+4. [Single channel continuous conversion using interrupt](interrupt-continuous-conversion)
