@@ -10,6 +10,11 @@ Transmit the sensor value read to USART1. This project does not require any IDE 
 ![Build Passing](https://img.shields.io/badge/build-passing-brightgreen) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
 ##ADC Modes
+
+1. Single
+2. Continuous
+3. Scan
+4. Discontinuous
 ADC in STM32 can be utilized in multiple modes as follows:
 1. [Single channel single conversion using polling](polling-single-conversion)
 2. [Single channel single conversion using interrupt](polling-continuous-conversion)

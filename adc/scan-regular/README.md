@@ -4,6 +4,19 @@ Read value from analog sensor connected to Channel0 of ADC1 on pin PA0 in contin
 
 ![Build Passing](https://img.shields.io/badge/build-passing-brightgreen) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
+## Brief
+- DMA Request generation during regular channel conversion
+EOC sends a request signal to DMA controller As soon as the DMA Controller accesses the peripheral, an Acknowledge is sent to the peripheral by the DMA Controller.
+The peripheral releases its request as soon as it gets the Acknowledge from the DMA Controller. Once the request is deasserted by the peripheral, the DMA Controller release the Acknowledge.
+Channel configuration procedure
+The following sequence should be followed to configure a DMA channelx (where x is the channel number).
+1. Set the peripheral register address in the DMA_CPARx register. The data will be moved from/ to this address to/ from the memory after the peripheral event.
+2. Set the memory address in the DMA_CMARx register. The data will be written to or read from this memory after the peripheral event.
+3. Configure the total number of data to be transferred in the DMA_CNDTRx register. After each peripheral event, this value will be decremented.
+4. Configure the channel priority using the PL[1:0] bits in the DMA_CCRx register
+5. Configure data transfer direction, circular mode, peripheral & memory incremented mode, peripheral & memory data size, and interrupt after half and/or full transfer in the DMA_CCRx register
+6. Activate the channel by setting the ENABLE bit in the DMA_CCRx register.
+
 ## Dependencies
 
 * make
