@@ -77,11 +77,17 @@ void init_adc(void)
     /* Enable clock for ADC & PortA */
     RCC->APB2ENR |= RCC_APB2ENR_ADC1EN | RCC_APB2ENR_IOPAEN;
 
-    /* COnfigure PA0 in analog input mode */
-    GPIOA->CRL &= ~(GPIO_CRL_CNF0 | GPIO_CRL_MODE0);
+    /* Configure PA1 in analog input mode */
+    GPIOA->CRL &= ~(GPIO_CRL_CNF1 | GPIO_CRL_MODE1);
+
+    /* Set total conversions = 1 */
+    ADC1->SQR1 &= ~ADC_SQR1_L;
+
+    /* Set Channel1 as first conversion */
+    ADC1->SQR3 |= ADC_SQR3_SQ1_0;
 
     /* Set sampling time = 28.5 cycles*/
-    ADC1->SMPR2 |= (ADC_SMPR2_SMP0_1 | ADC_SMPR2_SMP0_0);
+    ADC1->SMPR2 |= (ADC_SMPR2_SMP1_1 | ADC_SMPR2_SMP1_0);
 
     /* Put adc in Continuous mode and wake up from power down mode*/
     ADC1->CR2 |= (ADC_CR2_CONT | ADC_CR2_ADON);
