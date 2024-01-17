@@ -1,36 +1,18 @@
-# ADC interfacing of STM32 Blue Pill in Baremetal Embedded C
+# ADC Scan mode in STM32F1 Blue Pill - Cortex M3
 
-Read value from analog sensor connected to Channel0 of ADC1 on pin PA0 in continuous mode. Transmit the sensor value read to USART1. This project does not require any IDE like CubeIde, any text editor will work including notepad and vim. For better debugging experience, VSCode is preferred.
+Read values from analog sensors connected to ADC1 Channel1 on pin PA1 and Channel2 on pin PA2 in Scan mode. Transmit the converted sensor values to USART1. This project does not require any IDE like CubeIde, any text editor will work including notepad and vim. For better debugging experience, VSCode is preferred.
 
 ![Build Passing](https://img.shields.io/badge/build-passing-brightgreen) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
-## Brief
-- DMA Request generation during regular channel conversion
-EOC sends a request signal to DMA controller As soon as the DMA Controller accesses the peripheral, an Acknowledge is sent to the peripheral by the DMA Controller.
-The peripheral releases its request as soon as it gets the Acknowledge from the DMA Controller. Once the request is deasserted by the peripheral, the DMA Controller release the Acknowledge.
-Channel configuration procedure
-The following sequence should be followed to configure a DMA channelx (where x is the channel number).
-1. Set the peripheral register address in the DMA_CPARx register. The data will be moved from/ to this address to/ from the memory after the peripheral event.
-2. Set the memory address in the DMA_CMARx register. The data will be written to or read from this memory after the peripheral event.
-3. Configure the total number of data to be transferred in the DMA_CNDTRx register. After each peripheral event, this value will be decremented.
-4. Configure the channel priority using the PL[1:0] bits in the DMA_CCRx register
-5. Configure data transfer direction, circular mode, peripheral & memory incremented mode, peripheral & memory data size, and interrupt after half and/or full transfer in the DMA_CCRx register
-6. Activate the channel by setting the ENABLE bit in the DMA_CCRx register.
+## Description
 
-## Dependencies
+Please refer to this medium article for additional information on ADC operation in Scan mode. \
+Link to article: [Converting multiple analog channels in STM32F1](https://medium.com/@csrohit/converting-multiple-analog-channels-in-stm32f1-e05e10e45e48)
 
-* make
- Make utility is required for configuring and building this project. You can install make on Linux by running the command:
+# for macOS using brew formulae
 
- ```bash
- # for Debian-based Linux distros
- sudo apt install build-essential
-
- # for macOS
- xcode-select --install
- 
- # for macOS using brew formulae
  brew install make
+
  ```
 
 * gcc-arm-none-eabi toolchain
