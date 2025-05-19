@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "i2c.h": "c",
+        "stm32f4xx.h": "c",
+        "stdint.h": "c",
+        "stm32f401xc.h": "c",
+        "cmsis_gcc.h": "c",
+        "stdio.h": "c",
+        "stm32_compat.h": "c",
+        "stm32.h": "c",
+        "usb.h": "c",
+        "stdbool.h": "c",
+        "stm32f1xx.h": "c",
+        "stm32f103x6.h": "c",
+        "core_cm3.h": "c",
+        "cmsis_version.h": "c",
+        "cmsis_compiler.h": "c"
+    }
+}
