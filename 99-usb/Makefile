@@ -37,7 +37,7 @@ MCUFLAGS    := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb
 CFLAGS      := -std=c11 -Wall -g -gdwarf-2 --specs=nano.specs
 
 # Linker flags
-LDSCRIPT    := stm32f103x6.ld
+LDSCRIPT    := stm32f1.ld
 LDFLAGS     := -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map -Wl,--gc-sections
 
 # Default targets
@@ -51,35 +51,35 @@ size: $(BUILD_DIR)/$(TARGET).size
 # Build rules
 $(BUILD_DIR)/$(TARGET).elf: $(OBJS)
 	@echo Linking $@
-	$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) -o $@
+	@$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) -o $@
 
 $(BUILD_DIR)/%.o: %.c
 	@echo Compiling $<
 	@mkdir -p $(dir $@)
-	$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.cpp
 	@echo Compiling $<
 	@mkdir -p $(dir $@)
-	$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.s
 	@echo Assembling $<
 	@mkdir -p $(dir $@)
-	$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.S
 	@echo Assembling $<
 	@mkdir -p $(dir $@)
-	$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(MCUFLAGS) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 %.bin: %.elf
 	@echo Creating $@
-	$(OBJCOPY) -O binary $< $@
+	@$(OBJCOPY) -O binary $< $@
 
 %.hex: %.elf
 	@echo Creating $@
-	$(OBJCOPY) -O ihex $< $@
+	@$(OBJCOPY) -O ihex $< $@
 
 %.size: %.elf
 	$(SIZE) $<
