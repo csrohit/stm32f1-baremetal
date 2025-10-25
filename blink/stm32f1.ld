@@ -1,21 +1,22 @@
+PHDRS
+{
+    text PT_LOAD FLAGS(5); /* RX: Read + Execute */
+    data PT_LOAD FLAGS(6); /* RW: Read + Write */
+    bss PT_LOAD FLAGS(6);  /* RW: Read + Write */
+}
+
 ENTRY(Reset_Handler)
 
 MEMORY
 {
-    FLASH(rx):ORIGIN =0x08000000,LENGTH =64K
-    SRAM(rw):ORIGIN =0x20000000,LENGTH =20K
+    FLASH(rx): ORIGIN = 0x08000000, LENGTH = 64K
+    SRAM(rw): ORIGIN = 0x20000000, LENGTH = 20K
 }
 
 SECTIONS
 {
-    .isr_vector :
-    {
-        KEEP(*(.isr_vector));
-        . = ALIGN(4);
-    }> FLASH
-
-    .text :
-    {
+    .isr_vector : { KEEP(*(.isr_vector)); . = ALIGN(4); } > FLASH :text
+    .text : {
         *(.text)
         *(.text.*)
         *(.init)
@@ -24,21 +25,19 @@ SECTIONS
         *(.rodata.*)
         . = ALIGN(4);
         _etext = .;
-    }> FLASH
+    } > FLASH :text
 
     _la_data = LOADADDR(.data);
 
-    .data :
-    {
+    .data : {
         _sdata = .;
         *(.data)
         *(.data.*)
         . = ALIGN(4);
         _edata = .;
-    }> SRAM AT> FLASH
+    } > SRAM AT > FLASH :data
 
-    .bss :
-    {
+    .bss : {
         _sbss = .;
         __bss_start__ = _sbss;
         *(.bss)
@@ -50,5 +49,5 @@ SECTIONS
         . = ALIGN(4);
         end = .;
         __end__ = .;
-    }> SRAM
+    } > SRAM :bss
 }

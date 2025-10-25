@@ -60,7 +60,7 @@ $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CPU_FLAGS) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/%.o: %.pp
+$(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CPP_FLAGS) $(CPU_FLAGS) $(CFLAGS) -c $< -o $@
 
