@@ -1,17 +1,29 @@
 TARGET      := blink
+
 # debug build?Release
 BUILD_TYPE  = Release
 
 TRIPLE      =   arm-none-eabi
 CC          =   ${TRIPLE}-gcc
+CXX         =   ${TRIPLE}-g++
 LD 		    =   ${TRIPLE}-ld
 AS 		    =   ${TRIPLE}-as
 GDB 	    =   ${TRIPLE}-gdb
 OBJCOPY     =   ${TRIPLE}-objcopy
 
-INCFLAGS    := -Iinclude -Ilib/include
-LDFLAGS     := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -Wl,--gc-sections
-CFLAGS      := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb -nostdlib $(INCFLAGS) -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
+
+
+INC_DIRS    := include lib/include
+SRC_DIRS    := src
+BUILD_DIR   := build
+
+SRCS        := $(shell find $(SRC_DIRS) -name '*.c')
+OBJS        := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
+
+CPP_FLAGS 	:= $(addprefix -I,$(INC_DIRS)) $(DEFS)
+CPU_FLAGS   := -mcpu=cortex-m3 -mfloat-abi=soft -mthumb
+CFLAGS      := -nostdlib -std=gnu11 -Os -Wall -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections
+LD_FLAGS    := -nostdlib -Wl,--gc-sections
 
 ifeq ($(BUILD_TYPE), Debug)
 CFLAGS 		+= -g -gdwarf-2
@@ -19,12 +31,6 @@ endif
 
 # Generate dependency information
 CFLAGS      += -MMD -MP 
-
-SRC_DIRS    := src
-BUILD_DIR   := build
-
-SRCS        := $(shell find $(SRC_DIRS) -name '*.c')
-OBJS        := $(SRCS:%.c=$(BUILD_DIR)/%.o) 
 
 # binary file to flash on target
 all : $(BUILD_DIR)/$(TARGET).bin
@@ -48,17 +54,30 @@ all : $(BUILD_DIR)/$(TARGET).bin
 	@$(SIZE) $<
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJS) 
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) -Tstm32f1.ld -Wl,-Map="$(BUILD_DIR)/$(TARGET).map"
+	$(CC) $(LD_FLAGS) -o $@ $(OBJS) -Tstm32f1.ld -Wl,-Map="$(BUILD_DIR)/$(TARGET).map"
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CPU_FLAGS) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: %.pp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CPP_FLAGS) $(CPU_FLAGS) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.s
 	@mkdir -p $(dir $@)
 	$(CC) $(ASFLAGS) -c $< -o $@
 
-flash:
+flash: bin
+	STM32_Programmer_CLI -c port=SWD ap=0 -w $(BUILD_DIR)/$(TARGET).elf -rst
+
+erase:
+	STM32_Programmer_CLI -c port=SWD ap=0 -e all
+
+reset:
+	STM32_Programmer_CLI -c port=SWD ap=0  -rst
+
+flashv2:
 	st-flash write $(BUILD_DIR)/$(TARGET).bin 0x8000000
 
 flash-openocd:
